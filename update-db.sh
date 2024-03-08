@@ -3,14 +3,12 @@
 #
 # Usage ./update-db.sh
 
-mkdir -p sql_data
-
-aws s3 cp s3://docker-container-data/migrations/ ./sql_data/ --recursive
+ls /migrations
 
 version=$1
 if [ -z "$version" ];
 then
-    ./migrate -path /sql_data -database "mysql://${MYSQL_USERNAME}:${MYSQL_PASSWORD}@tcp(${MYSQL_HOSTNAME})/${MYSQL_DB_NAME}" -verbose up
+    ./migrate -path /migrations -database "mysql://${MYSQL_USERNAME}:${MYSQL_PASSWORD}@tcp(${MYSQL_HOSTNAME})/${MYSQL_DB_NAME}" -verbose up
 else
-    ./migrate -path /sql_data -database "mysql://${MYSQL_USERNAME}:${MYSQL_PASSWORD}@tcp(${MYSQL_HOSTNAME})/${MYSQL_DB_NAME}" force ${version}
+    ./migrate -path /migrations -database "mysql://${MYSQL_USERNAME}:${MYSQL_PASSWORD}@tcp(${MYSQL_HOSTNAME})/${MYSQL_DB_NAME}" force ${version}
 fi
