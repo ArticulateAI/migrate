@@ -3,6 +3,7 @@
 #
 # Usage ./update-db.sh
 
+echo "Starting database migration..."
 ls /migrations
 
 version=$1
