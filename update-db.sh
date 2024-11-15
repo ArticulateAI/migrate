@@ -9,6 +9,8 @@ ls /migrations
 action=$1
 version=$2
 
+echo "action: $action, version: $version"
+
 if [ "$action" = "force" ]
 then
     if [ -z "$version" ]
