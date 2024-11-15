@@ -6,27 +6,13 @@
 echo "Starting database migration..."
 ls /migrations
 
-action=$1
-version=$2
+args=$1
 
-echo "action: $action, version: $version"
+echo "args: $args"
 
-if [ "$action" = "force" ]
+if [ -z "$args" ]
 then
-    if [ -z "$version" ]
-    then
-        echo "force <version>: Please provide version number to force the database to"
-        exit 1
-    fi
-    ./migrate -path /migrations -database "mysql://${MYSQL_USERNAME}:${MYSQL_PASSWORD}@tcp(${MYSQL_HOSTNAME})/${MYSQL_DB_NAME}" force ${version}
-elif [ "$action" = "goto" ]
-then
-    if [ -z "$version" ]
-    then
-        echo "goto <version>: Please provide version number the database should go to"
-        exit 1
-    fi
-    ./migrate -path /migrations -database "mysql://${MYSQL_USERNAME}:${MYSQL_PASSWORD}@tcp(${MYSQL_HOSTNAME})/${MYSQL_DB_NAME}" -verbose goto ${version}
-else
     ./migrate -path /migrations -database "mysql://${MYSQL_USERNAME}:${MYSQL_PASSWORD}@tcp(${MYSQL_HOSTNAME})/${MYSQL_DB_NAME}" -verbose up
+else
+    ./migrate -path /migrations -database "mysql://${MYSQL_USERNAME}:${MYSQL_PASSWORD}@tcp(${MYSQL_HOSTNAME})/${MYSQL_DB_NAME}" $args
 fi
